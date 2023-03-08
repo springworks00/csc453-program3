@@ -1,0 +1,39 @@
+# Program 3
+
+Dylan Jessen (springworks00)
+
+### DESCRIPTION:
+
+Simulates virtual memory management with a TLB, PageTable, a variable number of 
+physical frames available, and a variable replacement algorithm.
+
+Replacement Algorithms:
+1. FIFO = First page to arrive in physical memory is the first to be evicted
+
+2. LRU = Oldest page in physical memory is the first to be evicted
+
+3. OPT = Farthest into the future page is the first to be evicted
+
+4. BAD = Youngest page is the first to be evicted
+
+
+Pages cached in the TLB are always FIFO-managed, with the additional requirement
+that there can be no duplicate pages in the TLB (duplicate instances are removed
+when a newer instance arrives).
+
+`main.py` = simulator
+
+`mem.py` = TLB and PageTable
+
+`cache.py` = FIFOCache, LRUCache, OPTCache, BADCache
+
+
+### GRADING NOTES:
+
+I think my implementation of OPT is fragile.
+
+But I did implement a BAD algorithm as well, that (I think) always performs as bad
+or worse than the others.
+
+
+

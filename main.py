@@ -20,13 +20,14 @@ def simulate(INPUT, verbose=False, debug=False):
 
     mem.PHYSICAL_FRAME_COUNT = INPUT.frames
     vaddrs = INPUT.vaddrs
+
     algorithm_name = INPUT.algorithm
     if algorithm_name == "FIFO":
         algorithm = cache.FIFOCache(INPUT.frames)
     elif algorithm_name == "LRU":
         algorithm = cache.LRUCache(INPUT.frames)
     elif algorithm_name == "OPT":
-        algorithm = cache.OPTCache(INPUT.frames)
+        algorithm = cache.OPTCache(INPUT.frames, vaddrs)
     elif algorithm_name == "BAD":
         algorithm = cache.BADCache(INPUT.frames)
 
@@ -68,9 +69,6 @@ def simulate(INPUT, verbose=False, debug=False):
             print(f"[fault <- {vaddr.num}]")
 
         paddr = mem.assign_paddr(vaddr, algorithm)
-        
-        #if verbose:
-        #    print_status(vaddr, paddr)
 
     if verbose or debug:
         print(OUTPUT)
@@ -79,8 +77,6 @@ def simulate(INPUT, verbose=False, debug=False):
         print(f"(ALGORITHM = {algorithm_name})")
     return OUTPUT
 
-# sys.argv
 x = Input(sys.argv)
-simulate(x, debug=True)
-
+simulate(x, verbose=True)
 

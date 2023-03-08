@@ -1,13 +1,27 @@
 from collections import namedtuple
 
 class VirtualAddr:
-    def __init__(self, vaddr):
+    def __init__(self, vaddr, loc):
         self.val = vaddr
         self.num = (vaddr >> 8) & 0xFF
         self.offset = vaddr & 0xFF
+        self.addr_list_loc = loc
 
     def from_file(path):
-        return list(map(lambda x: VirtualAddr(int(x)), open(path, 'r').readlines()))
+        xs = []
+        for i, addr in enumerate(open(path, "r").readlines()):
+            xs.append(VirtualAddr(int(addr), i))
+        return xs 
+        #return list(map(lambda x: VirtualAddr(int(x)), open(path, 'r').readlines()))
+
+    def __eq__(self, other):
+        return self.num == other.num
+
+    def __hash__(self):
+        return hash(self.num)
+
+    def __repr__(self):
+        return f"VA(num={self.num})"
 
 class Input:
     def __init__(self, argv):

@@ -20,7 +20,7 @@ def check_tlb(vaddr, algorithm):
 
     # case: vaddr not in cache
     if vaddr.num not in tlb:
-        algorithm.register_get(vaddr.num)
+        algorithm.register_get(vaddr)
         return None
 
     return check_page_table(vaddr, algorithm)
@@ -53,7 +53,7 @@ def check_page_table(vaddr, algorithm):
     if type(vaddr) is not VirtualAddr:
         raise Exception(f"not a VirtualAddr: {vaddr}")
 
-    algorithm.register_get(vaddr.num)
+    algorithm.register_get(vaddr)
 
     return page_table[vaddr.num]
 
@@ -62,7 +62,7 @@ def assign_paddr(vaddr, algorithm):
     if type(vaddr) is not VirtualAddr:
         raise Exception(f"not a VirtualAddr: {vaddr}")
   
-    return algorithm.put(vaddr.num, page_table, tlb_evict_vnum)
+    return algorithm.put(vaddr, page_table, tlb_evict_vnum)
 
 
 # -----------------------------------------------------------------------
