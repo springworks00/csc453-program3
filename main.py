@@ -27,6 +27,9 @@ def simulate(INPUT, verbose=False, debug=False):
         algorithm = cache.LRUCache(INPUT.frames)
     elif algorithm_name == "OPT":
         algorithm = cache.OPTCache(INPUT.frames)
+    elif algorithm_name == "BAD":
+        algorithm = cache.BADCache(INPUT.frames)
+
 
     OUTPUT = Output(len(vaddrs))
 
@@ -37,7 +40,7 @@ def simulate(INPUT, verbose=False, debug=False):
             print(f"TLB: {mem.tlb}", end="\t")
 
         # case: hit
-        paddr = mem.check_tlb(vaddr)
+        paddr = mem.check_tlb(vaddr, algorithm)
         if paddr is not None:
             OUTPUT.hits += 1
             if debug:
@@ -48,7 +51,7 @@ def simulate(INPUT, verbose=False, debug=False):
             continue
 
         # case: miss -> cache vaddr
-        paddr = mem.check_page_table(vaddr)
+        paddr = mem.check_page_table(vaddr, algorithm)
         if paddr is not None:
             OUTPUT.misses += 1
             if debug:

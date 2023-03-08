@@ -21,7 +21,7 @@ class Input:
             self.frames = 256
 
         # ALGORITHM
-        if len(argv) >= 4 and argv[3] in ["FIFO", "LRU", "OPT"]:
+        if len(argv) >= 4 and argv[3] in ["FIFO", "LRU", "OPT", "BAD"]:
             self.algorithm = argv[3]
         else:
             self.algorithm = "FIFO"
@@ -46,5 +46,5 @@ class Output:
         s += "Page Fault Rate = {0:.3f}\n".format(fault_rate)
         s += f"TLB Hits = {self.hits}\n"
         s += f"TLB Misses = {self.misses}\n"
-        s += f"TLB Hit Rate = {0:.3f}".format(hit_rate)
+        s += "TLB Hit Rate = {0:.3f}".format(hit_rate)
         return s

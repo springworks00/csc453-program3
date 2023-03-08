@@ -14,15 +14,16 @@ PHYSICAL_FRAME_COUNT = None # assigned by command line
 #backing_store = []
 
 # ---- TLB --------------------------------------------------------------
-def check_tlb(vaddr):
+def check_tlb(vaddr, algorithm):
     if type(vaddr) is not VirtualAddr:
         raise Exception(f"not a VirtualAddr: {vaddr}")
 
     # case: vaddr not in cache
     if vaddr.num not in tlb:
+        algorithm.register_get(vaddr.num)
         return None
 
-    return check_page_table(vaddr)
+    return check_page_table(vaddr, algorithm)
 
 def tlb_evict_vnum(vnum):
     if type(vnum) is not int:
@@ -48,9 +49,11 @@ def cache(vaddr):
 
 # ---- PAGE TABLE -------------------------------------------------------
 
-def check_page_table(vaddr):
+def check_page_table(vaddr, algorithm):
     if type(vaddr) is not VirtualAddr:
         raise Exception(f"not a VirtualAddr: {vaddr}")
+
+    algorithm.register_get(vaddr.num)
 
     return page_table[vaddr.num]
 
@@ -60,22 +63,6 @@ def assign_paddr(vaddr, algorithm):
         raise Exception(f"not a VirtualAddr: {vaddr}")
   
     return algorithm.put(vaddr.num, page_table, tlb_evict_vnum)
-    #page_table[vaddr.num] = 1
-
-    # XXX: entries are not getting removed from the TLB
-
-    # case: evict a page
-    # if len(fifo) == PHYSICAL_FRAME_COUNT:
-    #     evict_vnum = fifo.pop()
-    #     if type(evict_vnum) is not int:
-    #         raise Exception(f"not an int (vnum): {evict_vnum}")
-    #     page_table[evict_vnum] = None
-    #     tlb_evict_vnum(evict_vnum)
-    # 
-    # fifo.insert(0, vaddr.num)
-    # page_table[vaddr.num] = 1
-    
-    pass
 
 
 # -----------------------------------------------------------------------
